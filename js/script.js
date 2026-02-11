@@ -23,6 +23,7 @@ const scoreboard = document.getElementById("scoreboard").children;
 bigCake.addEventListener('click', () => {
     cakes += clickValue;
     updateScoreboard();
+    updateButtons();
 });
 
 function updateScoreboard() {
@@ -39,3 +40,60 @@ const upgradeCosts = {
     click3: 100,
     autoClick: 200
 };
+
+upClick1.addEventListener('click', () => {
+    if (cakes >= upgradeCosts.click1) {
+        cakes -= upgradeCosts.click1;
+        clickValue += 1;
+        upgrades.click1 += 1;
+        updateScoreboard();
+        updateButtons();
+    }
+});
+
+upClick2.addEventListener('click', () => {
+    if (cakes >= upgradeCosts.click2) {
+        cakes -= upgradeCosts.click2;
+        clickValue += 5;
+        upgrades.click2 += 1;
+        updateScoreboard();
+        updateButtons();
+    }
+});
+
+upClick3.addEventListener('click', () => {
+    if (cakes >= upgradeCosts.click3) {
+        cakes -= upgradeCosts.click3;
+        clickValue += 10;
+        upgrades.click3 += 1;
+        updateScoreboard();
+        updateButtons();
+    }
+});
+
+autoClick.addEventListener('click', () => {
+    if (cakes >= upgradeCosts.autoClick) {
+        cakes -= upgradeCosts.autoClick;
+        upgrades.autoClick += 1;
+        cakesPerSecond += 1;
+        updateScoreboard();
+        updateButtons();
+    }
+});
+
+// AutoClicker interval
+setInterval(() => {
+    if (cakesPerSecond > 0) {
+        cakes += cakesPerSecond;
+        updateScoreboard();
+        updateButtons();
+    }
+}, 1000);
+
+// Disable upgrades player can't use
+function updateButtons() {
+    upClick1.disabled = cakes < upgradeCosts.click1;
+    upClick2.disabled = cakes < upgradeCosts.click2;
+    upClick3.disabled = cakes < upgradeCosts.click3;
+    autoClick.disabled = cakes < upgradeCosts.autoClick;
+}
