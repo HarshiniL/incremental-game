@@ -24,6 +24,7 @@ bigCake.addEventListener('click', () => {
     cakes += clickValue;
     updateScoreboard();
     updateButtons();
+    checkRewards();
 });
 
 function updateScoreboard() {
@@ -48,6 +49,7 @@ upClick1.addEventListener('click', () => {
         upgrades.click1 += 1;
         updateScoreboard();
         updateButtons();
+        checkRewards();
     }
 });
 
@@ -58,6 +60,7 @@ upClick2.addEventListener('click', () => {
         upgrades.click2 += 1;
         updateScoreboard();
         updateButtons();
+        checkRewards();
     }
 });
 
@@ -68,6 +71,7 @@ upClick3.addEventListener('click', () => {
         upgrades.click3 += 1;
         updateScoreboard();
         updateButtons();
+        checkRewards();
     }
 });
 
@@ -78,6 +82,7 @@ autoClick.addEventListener('click', () => {
         cakesPerSecond += 1;
         updateScoreboard();
         updateButtons();
+        checkRewards();
     }
 });
 
@@ -96,4 +101,29 @@ function updateButtons() {
     upClick2.disabled = cakes < upgradeCosts.click2;
     upClick3.disabled = cakes < upgradeCosts.click3;
     autoClick.disabled = cakes < upgradeCosts.autoClick;
+}
+
+// Reward System
+const rewards = [
+    { id: "reward1", threshold: 1 },
+    { id: "reward2", threshold: 100 },
+    { id: "reward3", threshold: 1000 },
+    { id: "reward4", threshold: 10000 },
+    { id: "reward5", threshold: 100000 },
+]
+
+function checkRewards() {
+    rewards.forEach(reward => {
+        const element = document.getElementById(reward.id);
+        if (cakes >= reward.threshold && !element.classList.contains("unlocked")) {
+            element.classList.add("unlocked");
+            element.style.opacity = 1;
+            element.style.transform = "scale(1.2)";
+
+            // Animation
+            setTimeout(() => {
+                element.style.transform = "scale(1)";
+            }, 500);
+        }
+    });
 }
