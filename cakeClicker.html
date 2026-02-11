@@ -11,35 +11,61 @@ and reward systems.
     <meta charset="utf-8">
     <title>Cake Clicker Game</title>
     <link rel="stylesheet" href="./css/cake.css">
+    <meta name="viewport" content="width=device-width">
 </head>
 
 <body>
   <div id="container">
-    <div id="topBar"></div>
+    
+    <div id="topBar">
+      <h1>Welcome to Cake Clicker!</h1>
+      <button id="helpButton">Help</button>
+      <button id="reset">Reset</button>
+    </div>
+    
     <div id="game">
         
       <div id="clickArea">
         <div id="gameTitle">
           <h1>Cake Clicker</h1>
         </div>
-        <div id="scoreboard"></div>
+
+        <div id="scoreboard">
+          <p>Number of cakes you have: </p>
+          <p>Click value: </p>
+          <p>Upgrades you own: </p>
+          <p>Cakes per second: </p>
+        </div>
+
         <button id="bigCake">
           <img src="images/birthday-cake.png" alt="Cake">
         </button>
+
       </div>
 
       <div id="upgradeArea">
         <div id="storeTitle">
           <h1>Store: Buy upgrades</h1>
         </div>
-        <div id="selections"></div>
+        <div id="selections">
+          <button class="upgrades" id="upClick1">Increase Click Value (+1 click)</button>
+          <button class="upgrades" id="upClick2">Increase Click Value (+5 click)</button>
+          <button class="upgrades" id="upClick3">Increase Click Value (+10 click)</button>
+          <button class="upgrades" id="autoClick">Hire Baker (auto click)</button>
+        </div>
       </div>
 
       <div id="rewardArea">
         <div id="rewardTitle">
           <h1>Rewards: Here's what you accomplished</h1>
         </div>
-        <div id="rewards"></div>
+        <div id="rewards">
+          <div class="rewardUnlocked" id="reward1">First Cake (1 cake)</div>
+          <div class="rewardUnlocked" id="reward2">Baking School Graduate (100 cakes)</div>
+          <div class="rewardUnlocked" id="reward3">Opening a bakery (1000 cakes)</div>
+          <div class="rewardUnlocked" id="reward3">Opening a cake factory (10000 cakes)</div>
+          <div class="rewardUnlocked" id="reward3">Opening a bakery chain (100000 cakes)</div>
+        </div>
       </div>
         
     </div>
