@@ -127,3 +127,33 @@ function checkRewards() {
         }
     });
 }
+
+// Reset Button
+const resetButton = document.getElementById("reset");
+
+resetButton.addEventListener('click', () => {
+    // Reset game stats
+    cakes = 0;
+    let clickValue = 1;
+    let cakesPerSecond = 0;
+    let upgrades = {
+        click1: 0,
+        click2: 0,
+        click3: 0,
+        autoClick: 0,
+    }
+
+    // Reset scoreboard
+    updateScoreboard();
+
+    // Reset upgrade buttons
+    updateButtons();
+
+    // Reset rewards
+    rewards.forEach(reward => {
+        const element = document.getElementById(reward.id);
+        element.classList.remove("unlocked");
+        element.style.opacity = 0;
+        element.style.transform = "scale(0.8)";
+    });
+});
