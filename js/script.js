@@ -23,14 +23,13 @@ const scoreboard = document.getElementById("scoreboard").children;
 bigCake.addEventListener('click', () => {
     cakes += clickValue;
     updateScoreboard();
-    showClickAnimation();
 });
 
 function updateScoreboard() {
-    scoreboard[0].textContent = 'Number of cakes you have: #{cakes}';
-    scoreboard[1].textContent = 'Click value: #{clickValue}';
-    scoreboard[2].textContent = 'Upgrades you own: #{upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick}';
-    scoreboard[3].textContent = 'Cakes per second: #{cakesPerSecond}';
+    scoreboard[0].textContent = `Number of cakes you have: ${cakes}`;
+    scoreboard[1].textContent = `Click value: ${clickValue}`;
+    scoreboard[2].textContent = `Upgrades you own: ${upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick}`;
+    scoreboard[3].textContent = `Cakes per second: ${cakesPerSecond}`;
 }
 
 // When clicking upgrade buttons
