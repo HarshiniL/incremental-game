@@ -134,9 +134,9 @@ const resetButton = document.getElementById("reset");
 resetButton.addEventListener('click', () => {
     // Reset game stats
     cakes = 0;
-    let clickValue = 1;
-    let cakesPerSecond = 0;
-    let upgrades = {
+    clickValue = 1;
+    cakesPerSecond = 0;
+    upgrades = {
         click1: 0,
         click2: 0,
         click3: 0,
