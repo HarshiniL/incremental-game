@@ -33,3 +33,9 @@ function updateScoreboard() {
 }
 
 // When clicking upgrade buttons
+const upgradeCosts = {
+    click1: 10,
+    click2: 50,
+    click3: 100,
+    autoClick: 200
+};
