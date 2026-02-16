@@ -75,6 +75,10 @@ html, body {
   width: 280px;
   height: auto;
   display: block;
+   transition: filter 0.3s ease-in-out;
+}
+#bigCake img:hover {
+  filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.5));
 }
 
 button {
