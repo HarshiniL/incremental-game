@@ -157,3 +157,15 @@ resetButton.addEventListener('click', () => {
         element.style.transform = "scale(0.8)";
     });
 });
+//Trophy pop up
+function showTrophy(message) {
+    const popup = document.getElementById("trophyPopup");
+    const text = document.getElementById("trophyText");
+    text.text.Content = message;
+    popup.classList.add("show");
+
+    //Hide after 3 seconds
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 3000);
+}
