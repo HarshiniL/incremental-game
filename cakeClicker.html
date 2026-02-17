@@ -8,25 +8,34 @@ and reward systems.
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>Cake Clicker Game</title>
-    <link rel="stylesheet" href="./css/cake.css">
-    <meta name="viewport" content="width=device-width">
+  <meta charset="utf-8">
+  <title>Cake Clicker Game</title>
+  <link rel="stylesheet" href="./css/cake.css">
+  <meta name="viewport" content="width=device-width">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
   <div id="container">
-    
+
     <div id="topBar">
-      <h1>Welcome to Cake Clicker!</h1>
+      <div class="title">
+        <h1>Welcome to Cake Clicker!</h1>
+      </div>
       <button id="helpButton">Help</button>
       <button id="reset">Reset</button>
     </div>
-    
+
     <div id="game">
-        
+
       <div id="clickArea">
-        <div id="gameTitle">
+        <div class="title">
           <h1>Cake Clicker</h1>
         </div>
 
@@ -44,7 +53,7 @@ and reward systems.
       </div>
 
       <div id="upgradeArea">
-        <div id="storeTitle">
+        <div class="title">
           <h1>Store: Buy upgrades</h1>
         </div>
         <div id="selections">
@@ -56,7 +65,7 @@ and reward systems.
       </div>
 
       <div id="rewardArea">
-        <div id="rewardTitle">
+        <div class="title">
           <h1>Rewards: Here's what you accomplished</h1>
         </div>
         <div id="rewards">
@@ -67,15 +76,16 @@ and reward systems.
           <div class="rewardUnlocked" id="reward5">🏆 Opening a bakery chain (100000 cakes)</div>
         </div>
       </div>
-        
+
     </div>
     <div id="trophyPopup">
       <img id="trophyIcon" src="images/trophy.jpg" alt="Trophy">
       <span id="trophyText">Achievement Unlocked!</span>
     </div>
-      
-      
+
+
   </div>
   <script src="js/script.js"></script>
 </body>
+
 </html>

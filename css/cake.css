@@ -7,7 +7,8 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
@@ -16,8 +17,8 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background:mistyrose; 
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  background: linear-gradient(to bottom, #fdf1e7, #f8d7c4);
+  font-family: "Nunito", sans-serif;
   color: #c78d30;
 }
 
@@ -33,24 +34,35 @@ html, body {
   padding: 0 1rem;
 }
 
+.title {
+  color: #ff7fa4;
+  padding: 8px 15px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
 #game {
   flex: 1;
   display: flex;
   width: 100%;
   position: relative;
 }
+
 /* Left */
 #clickArea {
   width: 28%;
   padding: 1rem;
   border-right: 5px solid #267a8f;
 }
+
 /* Middle */
 #upgradeArea {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
 }
+
 /* Right: */
 #rewardArea {
   width: 300px;
@@ -58,42 +70,53 @@ html, body {
   border-left: 5px solid #267a8f;
   overflow-y: auto;
 }
+
 .separator {
   width: 16px;
-  background:#EDBE9D;
+  background: #EDBE9D;
 }
 
-#upgradeArea, #rewardArea {
+#upgradeArea,
+#rewardArea {
   overflow-y: auto;
 }
+
 #bigCake {
-  background : none;
+  background: none;
   border: none;
   cursor: pointer;
 }
+
 #bigCake img {
   width: 280px;
   height: auto;
   display: block;
-   transition: filter 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out;
 }
+
 #bigCake img:hover {
-  filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.5));
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 button {
-  background-color: rgb(255, 163, 178);
+  background: linear-gradient(145deg, #ff9eb5, #ff7fa4);
+  box-shadow: 0 6px 0 #d86a8c;
+  transition: all 0.15s ease;
   color: white;
   border: none;
   border-radius: 10px;
   padding: 12px 20px;
   margin: 10px;
-  font-family: 'Courier New', Courier, monospace;
   font-size: 15px;
 }
 
 button:hover {
-  background-color: rgb(252, 179, 191);
+  transform: translateY(-3px);
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #d86a8c;
 }
 
 #selections {
@@ -111,13 +134,14 @@ button:hover {
   color: #FF69B4;
   font-weight: bold;
 }
+
 #trophyPopup {
   position: fixed;
-  bottom:30px;
+  bottom: 30px;
   /*right: -350px;*/
   width: 320px;
   padding: 15px 20px;
-  
+
   display: flex;
   align-items: center;
   gap: 15px;
@@ -128,10 +152,12 @@ button:hover {
   z-index: 9999;
   background: none;
 }
-#trophyPopip.show {
+
+#trophyPopup.show {
   right: 30px;
 }
-#trophyIcon {  
+
+#trophyIcon {
   width: 50px;
   height: 50px;
   object-fit: contain;
@@ -139,12 +165,13 @@ button:hover {
 }
 
 @media screen and (max-width: 1100px) {
-  #clickArea, #rewardArea {
+
+  #clickArea,
+  #rewardArea {
     display: none;
   }
+
   #upgradeArea {
     flex: 1;
   }
 }
-
-
