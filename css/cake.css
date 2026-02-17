@@ -19,29 +19,50 @@ body {
   min-height: 100vh;
   background: linear-gradient(to bottom, #fdf1e7, #f8d7c4);
   font-family: "Nunito", sans-serif;
-  color: #c78d30;
+  color: #5a4a4a;
 }
 
 #topBar {
   width: 100%;
   height: 40px;
-  background: ffe4e1;
-  padding: 20px;
-  padding-bottom: 20px;
-  margin: 10px;
+  padding: 10px;
+  margin: 15px;
   display: flex;
   align-items: center;
+  gap: 15px;
   padding: 0 1rem;
 }
 
+#topBar .title {
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+}
+
 .title {
+  font-size: 24px;
   color: #ff7fa4;
   padding: 8px 15px;
   display: inline-block;
-  margin-bottom: 1rem;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
+#clickArea .title,
+#upgradeArea .title,
+#rewardArea .title {
+  font-size: 16px;
+}
+
+#clickArea,
+#upgradeArea,
+#rewardArea {
+  background-color: rgba(255,255,255,0.6);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0 7px 10px rgba(255, 143, 169, 0.451);
+}
 #game {
   flex: 1;
   display: flex;
@@ -49,11 +70,31 @@ body {
   position: relative;
 }
 
+#scoreboard {
+  background-color: white;
+  border-radius: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 18px rgba(255, 143, 169, 0.451);
+}
+
+#scoreboard p {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.description {
+  margin: 10px;
+  margin-top: 0;
+  padding: 8px;
+}
 /* Left */
 #clickArea {
   width: 28%;
   padding: 1rem;
-  border-right: 5px solid #267a8f;
 }
 
 /* Middle */
@@ -67,7 +108,6 @@ body {
 #rewardArea {
   width: 300px;
   padding: 1rem;
-  border-left: 5px solid #267a8f;
   overflow-y: auto;
 }
 
@@ -83,6 +123,7 @@ body {
 
 #bigCake {
   background: none;
+  box-shadow: none;
   border: none;
   cursor: pointer;
 }
@@ -107,6 +148,9 @@ button {
   border-radius: 10px;
   padding: 12px 20px;
   margin: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   font-size: 15px;
 }
 
@@ -119,6 +163,14 @@ button:active {
   box-shadow: 0 2px 0 #d86a8c;
 }
 
+button:disabled {
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+  filter: grayscale(30%);
+}
+
 #selections {
   display: flex;
   flex-direction: column;
@@ -128,9 +180,20 @@ button:active {
   opacity: 0;
   transition: all 0.5s ease;
   transform: scale(0.8);
+  background-color: white;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 2px dashed #ffd1dc;
+  box-shadow: 0 6px 15px rgba(255, 143, 169, 0.451);
+  font-weight: 400;
 }
 
 .rewardUnlocked.unlocked {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  background: linear-gradient(145deg, #fff0f5, #ffe4ec);
+  border: 2px solid #ff9eb5;
+  box-shadow: 0 6px 15px rgba(255, 143, 169, 0.451);
   color: #FF69B4;
   font-weight: bold;
 }

@@ -40,10 +40,10 @@ and reward systems.
         </div>
 
         <div id="scoreboard">
-          <p>Number of cakes you have: </p>
-          <p>Click value: </p>
-          <p>Upgrades you own: </p>
-          <p>Cakes per second: </p>
+          <p><span>Cakes:</span> <span id="cakeCount">0</span></p>
+          <p><span>Click value:</span> <span id="clickValue">1</span></p>
+          <p><span>Upgrades you own:</span> <span id="upgradesOwned">0</span></p>
+          <p><span>Cakes per second:</span> <span id="cakesPerSecond">1</span></p>
         </div>
 
         <button id="bigCake">
@@ -54,8 +54,9 @@ and reward systems.
 
       <div id="upgradeArea">
         <div class="title">
-          <h1>Store: Buy upgrades</h1>
+          <h1>Store</h1>
         </div>
+        <p class="description">The more cakes you click, the more upgrades you can purchase!</p>
         <div id="selections">
           <button class="upgrades" id="upClick1">Increase Click Value (+1 click) Cost: 10 Cakes</button>
           <button class="upgrades" id="upClick2">Increase Click Value (+5 click) Cost: 50 Cakes</button>
@@ -66,8 +67,9 @@ and reward systems.
 
       <div id="rewardArea">
         <div class="title">
-          <h1>Rewards: Here's what you accomplished</h1>
+          <h1>Rewards</h1>
         </div>
+        <p class="description">Here are your achievements.</p>
         <div id="rewards">
           <div class="rewardUnlocked" id="reward1">🏆 First Cake (1 cake)</div>
           <div class="rewardUnlocked" id="reward2">🏆 Baking School Graduate (100 cakes)</div>
@@ -82,7 +84,6 @@ and reward systems.
       <img id="trophyIcon" src="images/trophy.jpg" alt="Trophy">
       <span id="trophyText">Achievement Unlocked!</span>
     </div>
-
 
   </div>
   <script src="js/script.js"></script>

@@ -16,8 +16,11 @@ const upClick2 = document.getElementById("upClick2");
 const upClick3 = document.getElementById("upClick3");
 const autoClick = document.getElementById("autoClick");
 
-// Scoreboard
-const scoreboard = document.getElementById("scoreboard").children;
+// Scoreboard elements
+const cakeCountSpan = document.getElementById("cakeCount");
+const clickValSpan = document.getElementById("clickValue");
+const upgradesOwnedSpan = document.getElementById("upgradesOwned");
+const cakesPerSecondSpan = document.getElementById("cakesPerSecond");
 
 // Clicking bigCake
 bigCake.addEventListener('click', () => {
@@ -28,10 +31,10 @@ bigCake.addEventListener('click', () => {
 });
 
 function updateScoreboard() {
-    scoreboard[0].textContent = `Number of cakes you have: ${cakes}`;
-    scoreboard[1].textContent = `Click value: ${clickValue}`;
-    scoreboard[2].textContent = `Upgrades you own: ${upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick}`;
-    scoreboard[3].textContent = `Cakes per second: ${cakesPerSecond}`;
+    cakeCountSpan.textContent = cakes;
+    clickValSpan.textContent = clickValue;
+    upgradesOwnedSpan.textContent = upgrades.autoClick + upgrades.click1 + upgrades.click2 + upgrades.click3;
+    cakesPerSecondSpan.textContent = cakesPerSecond;
 }
 
 // When clicking upgrade buttons
@@ -157,11 +160,13 @@ resetButton.addEventListener('click', () => {
         element.style.transform = "scale(0.8)";
     });
 });
+
+
 //Trophy pop up
 function showTrophy(message) {
     const popup = document.getElementById("trophyPopup");
     const text = document.getElementById("trophyText");
-    text.text.Content = message;
+    text.textContent = message;
     popup.classList.add("show");
 
     //Hide after 3 seconds
@@ -169,3 +174,6 @@ function showTrophy(message) {
         popup.classList.remove("show");
     }, 3000);
 }
+
+updateScoreboard();
+updateButtons();
