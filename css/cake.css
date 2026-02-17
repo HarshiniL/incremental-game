@@ -197,34 +197,71 @@ button:disabled {
   color: #FF69B4;
   font-weight: bold;
 }
-
-#trophyPopup {
+trophyPopup {
   position: fixed;
-  bottom: 30px;
-  /*right: -350px;*/
+  bottom:30px;
+  right: -350px;
   width: 320px;
   padding: 15px 20px;
-
   display: flex;
   align-items: center;
   gap: 15px;
   font-size: 16px;
   font-weight: bold;
-  box-shadow: 0 10px 25px rgba();
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
   transition: right 0.4s ease;
   z-index: 9999;
-  background: none;
+  background:none;
 }
-
 #trophyPopup.show {
   right: 30px;
 }
-
-#trophyIcon {
+#trophyIcon {  
   width: 50px;
   height: 50px;
   object-fit: contain;
 
+}
+.baker {
+  position:absolute;
+  font-size: 26px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select:none;
+}
+.baker.bounce {
+  animation: bakerBounce 0.35s ease;
+}
+
+.floatingNumber {
+  position: absolute;
+  font-size: 22px;
+  font-weight: bold;
+  color: #FF69B4;
+  pointer-events: none;
+  animation: floatUp 0.8s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+}
+@keyframes bakerBounce {
+  0% {
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  40% {
+    transform: translate(-50%, -60%) scale(1.15); 
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1); 
+  }
 }
 
 @media screen and (max-width: 1100px) {
