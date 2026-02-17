@@ -28,7 +28,7 @@ bigCake.addEventListener('click', (event) => {
 
     const rect = document.getElementById("clickArea").getBoundingClientRect()
     const x = event.clientX - rect.left;
-    const y = event.ClientY - rect.top;
+    const y = event.clientY - rect.top;
 
     showFloatingNumber(x, y, clickValue);
 
@@ -141,7 +141,7 @@ autoClick.addEventListener('click', () => {
         cakesPerSecond += upgrades.autoClick;
 
         //Increase cost 
-        upgradeCosts.autoclick = Math.floor(upgradeCosts.autoclick *1.25);
+        upgradeCosts.autoClick = Math.floor(upgradeCosts.autoClick *1.25);
 
         updateUpgradeText();
         updateScoreboard();

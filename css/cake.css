@@ -126,6 +126,7 @@ body {
   box-shadow: none;
   border: none;
   cursor: pointer;
+  padding-top: 40px;
 }
 
 #bigCake img {
@@ -197,7 +198,7 @@ button:disabled {
   color: #FF69B4;
   font-weight: bold;
 }
-trophyPopup {
+#trophyPopup {
   position: fixed;
   bottom:30px;
   right: -350px;
