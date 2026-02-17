@@ -23,8 +23,15 @@ const upgradesOwnedSpan = document.getElementById("upgradesOwned");
 const cakesPerSecondSpan = document.getElementById("cakesPerSecond");
 
 // Clicking bigCake
-bigCake.addEventListener('click', () => {
+bigCake.addEventListener('click', (event) => {
     cakes += clickValue;
+
+    const rect = document.getElementById("clickArea").getBoundingClientRect()
+    const x = event.clientX - rect.left;
+    const y = event.ClientY - rect.top;
+
+    showFloatingNumber(x, y, clickValue);
+
     updateScoreboard();
     updateButtons();
     checkRewards();
@@ -38,7 +45,7 @@ function updateScoreboard() {
 }
 
 // When clicking upgrade buttons
-const upgradeCosts = {
+let upgradeCosts = {
     click1: 10,
     click2: 50,
     click3: 100,
@@ -50,6 +57,11 @@ upClick1.addEventListener('click', () => {
         cakes -= upgradeCosts.click1;
         clickValue += 1;
         upgrades.click1 += 1;
+        
+        //Increase cost 
+        upgradeCosts.click1 = Math.floor(upgradeCosts.click1 *1.25);
+
+        updateUpgradeText();
         updateScoreboard();
         updateButtons();
         checkRewards();
@@ -61,6 +73,10 @@ upClick2.addEventListener('click', () => {
         cakes -= upgradeCosts.click2;
         clickValue += 5;
         upgrades.click2 += 1;
+        //Increase cost 
+        upgradeCosts.click2 = Math.floor(upgradeCosts.click2 *1.25);
+
+        updateUpgradeText();
         updateScoreboard();
         updateButtons();
         checkRewards();
@@ -72,20 +88,66 @@ upClick3.addEventListener('click', () => {
         cakes -= upgradeCosts.click3;
         clickValue += 10;
         upgrades.click3 += 1;
+        
+        //Increase cost 
+        upgradeCosts.click3 = Math.floor(upgradeCosts.click3 *1.25);
+
+        updateUpgradeText();
         updateScoreboard();
         updateButtons();
         checkRewards();
     }
 });
+function updateBakers(){
+    const clickArea = document.getElementById("clickArea");
+    const cakeBtn = document.getElementById("bigCake");
+    //remove old bakers to draw new ones
+    clickArea.querySelectorAll(".baker").forEach(b => b.remove());
+   
+    const n = upgrades.autoClick;
+    if (n <= 0) return;
+    const clickRect = clickArea.getBoundingClientRect();
+    const cakeRect = cakeBtn.getBoundingClientRect();
+    const centerX = (cakeRect.left + cakeRect.width / 2) - clickRect.left;
+    const centerY = (cakeRect.top + cakeRect.height / 2) - clickRect.top;
+
+    const radius = 140;
+    for (let i = 0; i < n; i++) {
+        const angle = (2 * Math.PI * i) / n;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        const baker = document.createElement("div");
+        baker.classList.add("baker");
+
+        baker.textContent = (i % 2 === 0)? "👩🏾‍🍳" : "👩🏽‍🍳";
+        baker.style.left = `${x}px`;
+        baker.style.top = `${y}px`;
+        
+        clickArea.appendChild(baker);
+    }
+}
+function bounceBakers () {
+    document.querySelectorAll(".baker").forEach(baker => {
+        baker.classList.remove("bounce");
+        void baker.offsetWidth;
+        baker.classList.add("bounce");
+    });
+}
 
 autoClick.addEventListener('click', () => {
     if (cakes >= upgradeCosts.autoClick) {
         cakes -= upgradeCosts.autoClick;
         upgrades.autoClick += 1;
-        cakesPerSecond += 1;
+        cakesPerSecond += upgrades.autoClick;
+
+        //Increase cost 
+        upgradeCosts.autoclick = Math.floor(upgradeCosts.autoclick *1.25);
+
+        updateUpgradeText();
         updateScoreboard();
         updateButtons();
         checkRewards();
+        updateBakers();
     }
 });
 
@@ -95,6 +157,7 @@ setInterval(() => {
         cakes += cakesPerSecond;
         updateScoreboard();
         updateButtons();
+        bounceBakers();
     }
 }, 1000);
 
@@ -122,7 +185,8 @@ function checkRewards() {
             element.classList.add("unlocked");
             element.style.opacity = 1;
             element.style.transform = "scale(1.2)";
-
+            
+            showTrophy(element.textContent);
             // Animation
             setTimeout(() => {
                 element.style.transform = "scale(1)";
@@ -152,6 +216,9 @@ resetButton.addEventListener('click', () => {
     // Reset upgrade buttons
     updateButtons();
 
+    //Reset bakers
+    updateBakers();
+
     // Reset rewards
     rewards.forEach(reward => {
         const element = document.getElementById(reward.id);
@@ -160,8 +227,6 @@ resetButton.addEventListener('click', () => {
         element.style.transform = "scale(0.8)";
     });
 });
-
-
 //Trophy pop up
 function showTrophy(message) {
     const popup = document.getElementById("trophyPopup");
@@ -174,6 +239,29 @@ function showTrophy(message) {
         popup.classList.remove("show");
     }, 3000);
 }
+
+function showFloatingNumber (x, y, value) {
+    const number = document.createElement("div");
+    number.classList.add("floatingNumber");
+    number.textContent = `+${value}`;
+
+    number.style.left = `${x}px`;
+    number.style.top = `${y}px`;
+
+    document.getElementById("clickArea").appendChild(number);
+
+    setTimeout(() => {
+        number.remove();
+    }, 800);
+}
+
+function updateUpgradeText (){
+    upClick1.textContent = `Increase Click Value (+1 click) Cost: ${upgradeCosts.click1} Cakes`;
+    upClick2.textContent = `Increase Click Value (+5 click) Cost: ${upgradeCosts.click2} Cakes`;
+    upClick3.textContent = `Increase Click Value (+10 click) Cost: ${upgradeCosts.click3} Cakes`;
+    autoClick.textContent = `Hire Baker (auto click) Cost: ${upgradeCosts.autoClick} Cakes`;
+}
+window.addEventListener("resize", updateBakers);
 
 updateScoreboard();
 updateButtons();
