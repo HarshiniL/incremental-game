@@ -7,7 +7,10 @@ let upgrades = {
     click2: 0,
     click3: 0,
     autoClick: 0,
+    autoClick2: 0,
 };
+let autoClick2Interval = null;
+let autoClick2Speed = 1000;
 
 // Grabbing buttons from DOM
 const bigCake = document.getElementById("bigCake");
@@ -15,6 +18,7 @@ const upClick1 = document.getElementById("upClick1");
 const upClick2 = document.getElementById("upClick2");
 const upClick3 = document.getElementById("upClick3");
 const autoClick = document.getElementById("autoClick");
+const autoClick2 = document.getElementById("autoClick2");
 
 // Scoreboard elements
 const cakeCountSpan = document.getElementById("cakeCount");
@@ -40,7 +44,7 @@ bigCake.addEventListener('click', (event) => {
 function updateScoreboard() {
     cakeCountSpan.textContent = cakes;
     clickValSpan.textContent = clickValue;
-    upgradesOwnedSpan.textContent = upgrades.autoClick + upgrades.click1 + upgrades.click2 + upgrades.click3;
+    upgradesOwnedSpan.textContent = upgrades.autoClick + upgrades.autoClick2 + upgrades.click1 + upgrades.click2 + upgrades.click3;
     cakesPerSecondSpan.textContent = cakesPerSecond;
 }
 
@@ -49,7 +53,8 @@ let upgradeCosts = {
     click1: 10,
     click2: 50,
     click3: 100,
-    autoClick: 200
+    autoClick: 200,
+    autoClick2: 300
 };
 
 upClick1.addEventListener('click', () => {
@@ -57,9 +62,9 @@ upClick1.addEventListener('click', () => {
         cakes -= upgradeCosts.click1;
         clickValue += 1;
         upgrades.click1 += 1;
-        
+
         //Increase cost 
-        upgradeCosts.click1 = Math.floor(upgradeCosts.click1 *1.25);
+        upgradeCosts.click1 = Math.floor(upgradeCosts.click1 * 1.25);
 
         updateUpgradeText();
         updateScoreboard();
@@ -74,7 +79,7 @@ upClick2.addEventListener('click', () => {
         clickValue += 5;
         upgrades.click2 += 1;
         //Increase cost 
-        upgradeCosts.click2 = Math.floor(upgradeCosts.click2 *1.25);
+        upgradeCosts.click2 = Math.floor(upgradeCosts.click2 * 1.25);
 
         updateUpgradeText();
         updateScoreboard();
@@ -88,9 +93,9 @@ upClick3.addEventListener('click', () => {
         cakes -= upgradeCosts.click3;
         clickValue += 10;
         upgrades.click3 += 1;
-        
+
         //Increase cost 
-        upgradeCosts.click3 = Math.floor(upgradeCosts.click3 *1.25);
+        upgradeCosts.click3 = Math.floor(upgradeCosts.click3 * 1.25);
 
         updateUpgradeText();
         updateScoreboard();
@@ -98,12 +103,12 @@ upClick3.addEventListener('click', () => {
         checkRewards();
     }
 });
-function updateBakers(){
+function updateBakers() {
     const clickArea = document.getElementById("clickArea");
     const cakeBtn = document.getElementById("bigCake");
     //remove old bakers to draw new ones
     clickArea.querySelectorAll(".baker").forEach(b => b.remove());
-   
+
     const n = upgrades.autoClick;
     if (n <= 0) return;
     const clickRect = clickArea.getBoundingClientRect();
@@ -119,14 +124,14 @@ function updateBakers(){
         const baker = document.createElement("div");
         baker.classList.add("baker");
 
-        baker.textContent = (i % 2 === 0)? "👩🏾‍🍳" : "👩🏽‍🍳";
+        baker.textContent = (i % 2 === 0) ? "👩🏾‍🍳" : "👩🏽‍🍳";
         baker.style.left = `${x}px`;
         baker.style.top = `${y}px`;
-        
+
         clickArea.appendChild(baker);
     }
 }
-function bounceBakers () {
+function bounceBakers() {
     document.querySelectorAll(".baker").forEach(baker => {
         baker.classList.remove("bounce");
         void baker.offsetWidth;
@@ -138,10 +143,10 @@ autoClick.addEventListener('click', () => {
     if (cakes >= upgradeCosts.autoClick) {
         cakes -= upgradeCosts.autoClick;
         upgrades.autoClick += 1;
-        cakesPerSecond += upgrades.autoClick;
+        cakesPerSecond += 1;
 
         //Increase cost 
-        upgradeCosts.autoClick = Math.floor(upgradeCosts.autoClick *1.25);
+        upgradeCosts.autoClick = Math.floor(upgradeCosts.autoClick * 1.25);
 
         updateUpgradeText();
         updateScoreboard();
@@ -150,6 +155,41 @@ autoClick.addEventListener('click', () => {
         updateBakers();
     }
 });
+
+autoClick2.addEventListener("click", () => {
+    if (cakes >= upgradeCosts.autoClick2) {
+        cakes -= upgradeCosts.autoClick2;
+        upgrades.autoClick2 += 1;
+
+        // increase cost
+        upgradeCosts.autoClick2 = Math.floor(upgradeCosts.autoClick2 * 1.25);
+
+        // speed upgrade
+        autoClick2Speed = Math.max(200, 1000 - (upgrades.autoClick2 - 1) * 100);
+
+        startAutoclick2();
+
+        updateUpgradeText();
+        updateScoreboard();
+        updateButtons();
+        checkRewards();
+    }
+})
+
+// Autoclicker 2 interval
+function startAutoclick2() {
+    // clear old interval
+    if (autoClick2Interval !== null) {
+        clearInterval(autoClick2Interval);
+    }
+
+    // set new interval
+    autoClick2Interval = setInterval(() => {
+        cakes += 1;
+        updateScoreboard();
+        updateButtons();
+    }, autoClick2Speed);
+}
 
 // AutoClicker interval
 setInterval(() => {
@@ -167,6 +207,7 @@ function updateButtons() {
     upClick2.disabled = cakes < upgradeCosts.click2;
     upClick3.disabled = cakes < upgradeCosts.click3;
     autoClick.disabled = cakes < upgradeCosts.autoClick;
+    autoClick2.disabled = cakes < upgradeCosts.autoClick2;
 }
 
 // Reward System
@@ -179,20 +220,58 @@ const rewards = [
 ]
 
 function checkRewards() {
+    // Cake milesones
     rewards.forEach(reward => {
         const element = document.getElementById(reward.id);
         if (cakes >= reward.threshold && !element.classList.contains("unlocked")) {
-            element.classList.add("unlocked");
-            element.style.opacity = 1;
-            element.style.transform = "scale(1.2)";
-            
-            showTrophy(element.textContent);
-            // Animation
-            setTimeout(() => {
-                element.style.transform = "scale(1)";
-            }, 500);
+            unlockReward(element);
         }
     });
+
+    // Upgrade milestones
+    const totalUpgrades = upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick + upgrades.autoClick2;
+
+    if (totalUpgrades >= 50) {
+        const element = document.getElementById("reward6");
+        if (!element.classList.contains("unlocked")) {
+            unlockReward(element);
+        }
+    }
+
+    if (totalUpgrades >= 100) {
+        const element = document.getElementById("reward7");
+        if (!element.classList.contains("unlocked")) {
+            unlockReward(element);
+        }
+    }
+
+    // Baker milestones
+    if (upgrades.autoClick >= 5) {
+        const element = document.getElementById("reward8");
+        if (!element.classList.contains("unlocked")) {
+            unlockReward(element);
+        }
+    }
+
+    if (upgrades.autoClick >= 15) {
+        const element = document.getElementById("reward9");
+        if (!element.classList.contains("unlocked")) {
+            unlockReward(element);
+        }
+    }
+}
+
+// Helper function for checkRewards()
+function unlockReward(element) {
+    element.classList.add("unlocked");
+    element.style.opacity = 1;
+    element.style.transform = "scale(1.2)";
+
+    showTrophy(element.textContent);
+    // Animation
+    setTimeout(() => {
+        element.style.transform = "scale(1)";
+    }, 500);
 }
 
 // Reset Button
@@ -208,7 +287,17 @@ resetButton.addEventListener('click', () => {
         click2: 0,
         click3: 0,
         autoClick: 0,
+        autoClick2: 0,
     }
+
+    // Reset costs
+    upgradeCosts = {
+        click1: 10,
+        click2: 50,
+        click3: 100,
+        autoClick: 200,
+        autoClick2: 300
+    };
 
     // Reset scoreboard
     updateScoreboard();
@@ -226,7 +315,18 @@ resetButton.addEventListener('click', () => {
         element.style.opacity = 0;
         element.style.transform = "scale(0.8)";
     });
+
+    // Reset timer
+    if (autoClick2Interval != null) {
+        clearInterval(autoClick2Interval);
+        autoClick2Interval = null;
+    }
+
+    autoClick2Speed = 1000;
+    updateUpgradeText();
 });
+
+
 //Trophy pop up
 function showTrophy(message) {
     const popup = document.getElementById("trophyPopup");
@@ -240,7 +340,7 @@ function showTrophy(message) {
     }, 3000);
 }
 
-function showFloatingNumber (x, y, value) {
+function showFloatingNumber(x, y, value) {
     const number = document.createElement("div");
     number.classList.add("floatingNumber");
     number.textContent = `+${value}`;
@@ -255,11 +355,12 @@ function showFloatingNumber (x, y, value) {
     }, 800);
 }
 
-function updateUpgradeText (){
+function updateUpgradeText() {
     upClick1.textContent = `Increase Click Value (+1 click) Cost: ${upgradeCosts.click1} Cakes`;
     upClick2.textContent = `Increase Click Value (+5 click) Cost: ${upgradeCosts.click2} Cakes`;
     upClick3.textContent = `Increase Click Value (+10 click) Cost: ${upgradeCosts.click3} Cakes`;
     autoClick.textContent = `Hire Baker (auto click) Cost: ${upgradeCosts.autoClick} Cakes`;
+    autoClick2.textContent = `Install Turbo Oven (${1000 / autoClick2Speed}) Cost: ${upgradeCosts.autoClick2} Cakes`;
 }
 window.addEventListener("resize", updateBakers);
 
