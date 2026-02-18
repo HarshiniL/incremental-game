@@ -265,3 +265,24 @@ window.addEventListener("resize", updateBakers);
 
 updateScoreboard();
 updateButtons();
+
+// Help Popup
+const helpButton = document.getElementById("helpButton");
+const helpPopup = document.getElementById("helpPop");
+const closeHelp = document.getElementById("close");
+
+// open popup
+helpButton.addEventListener("click", () => {
+    helpPopup.style.display = "flex";
+});
+
+// close popup
+closeHelp.addEventListener("click", () => {
+    helpPopup.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+    if (e.target === helpPopup) {
+        helpPopup.style.display = "none";
+    }
+})
