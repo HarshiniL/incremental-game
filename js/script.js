@@ -1,7 +1,6 @@
 // When initializing the game
 let cakes = 0;
 let clickValue = 1;
-let cakesPerSecond = 0;
 let upgrades = {
     click1: 0,
     click2: 0,
@@ -9,8 +8,8 @@ let upgrades = {
     autoClick: 0,
     autoClick2: 0,
 };
-let autoClick2Interval = null;
-let autoClick2Speed = 1000;
+let autoClickInterval = null;
+let autoClickSpeed = 1000;
 
 // Grabbing buttons from DOM
 const bigCake = document.getElementById("bigCake");
@@ -45,7 +44,10 @@ function updateScoreboard() {
     cakeCountSpan.textContent = cakes;
     clickValSpan.textContent = clickValue;
     upgradesOwnedSpan.textContent = upgrades.autoClick + upgrades.autoClick2 + upgrades.click1 + upgrades.click2 + upgrades.click3;
-    cakesPerSecondSpan.textContent = cakesPerSecond;
+
+    // Cakes per second
+    const totalCPS = upgrades.autoClick * clickValue * (1000 / autoClickSpeed);
+    cakesPerSecondSpan.textContent = totalCPS.toFixed(2);
 }
 
 // When clicking upgrade buttons
@@ -143,7 +145,6 @@ autoClick.addEventListener('click', () => {
     if (cakes >= upgradeCosts.autoClick) {
         cakes -= upgradeCosts.autoClick;
         upgrades.autoClick += 1;
-        cakesPerSecond += 1;
 
         //Increase cost 
         upgradeCosts.autoClick = Math.floor(upgradeCosts.autoClick * 1.25);
@@ -153,6 +154,8 @@ autoClick.addEventListener('click', () => {
         updateButtons();
         checkRewards();
         updateBakers();
+
+        startAutoclick();
     }
 });
 
@@ -165,9 +168,9 @@ autoClick2.addEventListener("click", () => {
         upgradeCosts.autoClick2 = Math.floor(upgradeCosts.autoClick2 * 1.25);
 
         // speed upgrade
-        autoClick2Speed = Math.max(200, 1000 - (upgrades.autoClick2 - 1) * 100);
+        autoClickSpeed = Math.max(200, 1000 - (upgrades.autoClick2 - 1) * 100);
 
-        startAutoclick2();
+        startAutoclick();
 
         updateUpgradeText();
         updateScoreboard();
@@ -177,29 +180,20 @@ autoClick2.addEventListener("click", () => {
 })
 
 // Autoclicker 2 interval
-function startAutoclick2() {
+function startAutoclick() {
     // clear old interval
-    if (autoClick2Interval !== null) {
-        clearInterval(autoClick2Interval);
+    if (autoClickInterval !== null) {
+        clearInterval(autoClickInterval);
     }
 
     // set new interval
-    autoClick2Interval = setInterval(() => {
-        cakes += 1;
-        updateScoreboard();
-        updateButtons();
-    }, autoClick2Speed);
-}
-
-// AutoClicker interval
-setInterval(() => {
-    if (cakesPerSecond > 0) {
-        cakes += cakesPerSecond;
+    autoClickInterval = setInterval(() => {
+        cakes += upgrades.autoClick * clickValue;
         updateScoreboard();
         updateButtons();
         bounceBakers();
-    }
-}, 1000);
+    }, autoClickSpeed);
+}
 
 // Disable upgrades player can't use
 function updateButtons() {
@@ -207,7 +201,7 @@ function updateButtons() {
     upClick2.disabled = cakes < upgradeCosts.click2;
     upClick3.disabled = cakes < upgradeCosts.click3;
     autoClick.disabled = cakes < upgradeCosts.autoClick;
-    autoClick2.disabled = cakes < upgradeCosts.autoClick2;
+    autoClick2.disabled = cakes < upgradeCosts.autoClick2 || upgrades.autoClick === 0;
 }
 
 // Reward System
@@ -217,48 +211,30 @@ const rewards = [
     { id: "reward3", threshold: 1000 },
     { id: "reward4", threshold: 10000 },
     { id: "reward5", threshold: 100000 },
+    { id: "reward6", threshold: 50, type: "upgrade" },
+    { id: "reward7", threshold: 100, type: "upgrade" },
+    { id: "reward8", threshold: 5, type: "baker" },
+    { id: "reward9", threshold: 15, type: "baker" },
 ]
 
 function checkRewards() {
+    const totalUpgrades = upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick + upgrades.autoClick2;
+
     // Cake milesones
     rewards.forEach(reward => {
         const element = document.getElementById(reward.id);
-        if (cakes >= reward.threshold && !element.classList.contains("unlocked")) {
+        if (!element || element.classList.contains("unlocked")) {
+            return;
+        }
+
+        if (reward.type === "upgrade" && totalUpgrades >= reward.threshold) {
+            unlockReward(element);
+        } else if (reward.type === "baker" && upgrades.autoClick >= reward.threshold) {
+            unlockReward(element);
+        } else if (!reward.type && cakes >= reward.threshold) {
             unlockReward(element);
         }
     });
-
-    // Upgrade milestones
-    const totalUpgrades = upgrades.click1 + upgrades.click2 + upgrades.click3 + upgrades.autoClick + upgrades.autoClick2;
-
-    if (totalUpgrades >= 50) {
-        const element = document.getElementById("reward6");
-        if (!element.classList.contains("unlocked")) {
-            unlockReward(element);
-        }
-    }
-
-    if (totalUpgrades >= 100) {
-        const element = document.getElementById("reward7");
-        if (!element.classList.contains("unlocked")) {
-            unlockReward(element);
-        }
-    }
-
-    // Baker milestones
-    if (upgrades.autoClick >= 5) {
-        const element = document.getElementById("reward8");
-        if (!element.classList.contains("unlocked")) {
-            unlockReward(element);
-        }
-    }
-
-    if (upgrades.autoClick >= 15) {
-        const element = document.getElementById("reward9");
-        if (!element.classList.contains("unlocked")) {
-            unlockReward(element);
-        }
-    }
 }
 
 // Helper function for checkRewards()
@@ -281,7 +257,6 @@ resetButton.addEventListener('click', () => {
     // Reset game stats
     cakes = 0;
     clickValue = 1;
-    cakesPerSecond = 0;
     upgrades = {
         click1: 0,
         click2: 0,
@@ -311,18 +286,23 @@ resetButton.addEventListener('click', () => {
     // Reset rewards
     rewards.forEach(reward => {
         const element = document.getElementById(reward.id);
-        element.classList.remove("unlocked");
-        element.style.opacity = 0;
-        element.style.transform = "scale(0.8)";
+        if (element) {
+            element.classList.remove("unlocked");
+            element.style.opacity = 0;
+            element.style.transform = "scale(0.8)";
+        }
     });
 
     // Reset timer
-    if (autoClick2Interval != null) {
-        clearInterval(autoClick2Interval);
-        autoClick2Interval = null;
+    if (autoClickInterval != null) {
+        clearInterval(autoClickInterval);
+        autoClickInterval = null;
+    }
+    if (upgrades.autoClick > 0) {
+        startAutoclick();
     }
 
-    autoClick2Speed = 1000;
+    autoClickSpeed = 1000;
     updateUpgradeText();
 });
 
@@ -360,12 +340,15 @@ function updateUpgradeText() {
     upClick2.textContent = `Increase Click Value (+5 click) Cost: ${upgradeCosts.click2} Cakes`;
     upClick3.textContent = `Increase Click Value (+10 click) Cost: ${upgradeCosts.click3} Cakes`;
     autoClick.textContent = `Hire Baker (auto click) Cost: ${upgradeCosts.autoClick} Cakes`;
-    autoClick2.textContent = `Install Turbo Oven (${1000 / autoClick2Speed}) Cost: ${upgradeCosts.autoClick2} Cakes`;
+    autoClick2.textContent = `Install Turbo Oven (${(1000 / autoClickSpeed).toFixed(2)}/sec) Cost: ${upgradeCosts.autoClick2} Cakes`;
 }
 window.addEventListener("resize", updateBakers);
 
 updateScoreboard();
 updateButtons();
+if (upgrades.autoClick > 0) {
+    startAutoclick();
+}
 
 // Help Popup
 const helpButton = document.getElementById("helpButton");
