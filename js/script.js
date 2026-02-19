@@ -1,4 +1,11 @@
 // When initializing the game
+/* 
+Authors: Harshini Lakshman and Amanda Gbe
+Date: February 4th, 2026
+Description: This is the JAVASCRIPT file for the incremental clicker game, based on Cookie Clicker, using our own theme
+and reward systems.
+*/
+
 let cakes = 0;
 let clickValue = 1;
 let upgrades = {
