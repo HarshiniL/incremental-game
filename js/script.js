@@ -370,3 +370,17 @@ window.addEventListener("click", (e) => {
         helpPopup.style.display = "none";
     }
 })
+
+//background music
+const bgMusic = new Audio("audio/bakery-music.mp3");
+bgMusic.loop = true;
+bgMusic.volume = 0.25;
+
+let musicStarted = false;
+
+window.addEventListener("click", () => {
+    if (!musicStarted) {
+        bgMusic.play().catch(() => {});
+        musicStarted = true;
+    }
+}, { once: true });
