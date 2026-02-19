@@ -267,7 +267,7 @@ button:disabled {
 .popupContent {
   background-color: white;
   padding: 30px;
-  width: 400px;
+  width: 600px;
   max-width: 90%;
   border-radius: 20px;
   box-shadow: 0 6px 15px rgba(255, 143, 169, 0.451);
@@ -283,6 +283,11 @@ button:disabled {
 .popupContent ul {
   margin-left: 20px;
   margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.popupContent li {
+  margin-bottom: 5px;
 }
 
 #close {
