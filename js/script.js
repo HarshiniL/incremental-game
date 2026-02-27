@@ -176,7 +176,7 @@ window.addEventListener("load", function (event) {
             upgradeCosts.autoClick2 = Math.floor(upgradeCosts.autoClick2 * 1.25);
 
             // speed upgrade
-            autoClickSpeed = Math.max(200, 950 - (upgrades.autoClick2 - 1) * 100);
+            autoClickSpeed = Math.max(200, 1000 - upgrades.autoClick2 * 100);
 
             startAutoclick();
 
@@ -348,7 +348,7 @@ window.addEventListener("load", function (event) {
         upClick2.textContent = `Increase Click Value (+5 click) Cost: ${upgradeCosts.click2} Cakes`;
         upClick3.textContent = `Increase Click Value (+10 click) Cost: ${upgradeCosts.click3} Cakes`;
         autoClick.textContent = `Hire Baker (auto click) Cost: ${upgradeCosts.autoClick} Cakes`;
-        autoClick2.textContent = `Install Turbo Oven (${(1000 / autoClickSpeed).toFixed(2)}cakes/sec) Cost: ${upgradeCosts.autoClick2} Cakes`;
+        autoClick2.textContent = `Install Turbo Oven (${(1000 / autoClickSpeed).toFixed(2)} cakes/sec) Cost: ${upgradeCosts.autoClick2} Cakes`;
     }
     window.addEventListener("resize", updateBakers);
 
@@ -380,7 +380,7 @@ window.addEventListener("load", function (event) {
     })
 
     //background music
-    const bgMusic = new Audio("audio/bakery-music.mp3");
+    const bgMusic = document.getElementById("bgMusic");
     bgMusic.loop = true;
     bgMusic.volume = 0.25;
 
